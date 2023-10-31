@@ -1,8 +1,14 @@
 package com.gdn.indeniza.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Vehicle {
+public class Vehicle implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private String type;
 	private String brand;
