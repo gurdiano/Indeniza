@@ -1,6 +1,6 @@
 package com.gdn.indeniza.entities.resources;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ public class UserResource {
 	
 	@GetMapping
 	public ResponseEntity<User> findAll(){
-		User teste = new User(1L, "Tiago", "sasaas@As05", "tiagofran2013@hotmail.com", new Date());
+		User teste = new User(1L, "Tiago", "sasaas@As05", "tiagofran2013@hotmail.com", LocalDate.now());
 		return ResponseEntity.ok().body(teste);
 	}
 

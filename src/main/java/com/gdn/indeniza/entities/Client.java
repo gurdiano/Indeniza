@@ -1,7 +1,6 @@
 package com.gdn.indeniza.entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -15,8 +14,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name= "tb_user")
-public class User implements Serializable {
+@Table(name= "tb_client")
+public class Client implements Serializable{
 	
 	/**
 	 * 
@@ -26,31 +25,31 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(unique = true)
-	private String email;
 	private String name;
-	private String password;
-	private LocalDate creation;
+	@Column(unique = true)
+	private String cpf;
+	private String phone1;
+	private String phone2;
+	private String email;
 	
-	@OneToMany(mappedBy = "partner")
-	private Set<Order> orders = new HashSet<>();
+	@OneToMany(mappedBy = "client")
+	private Set<Order> order = new HashSet<>();
 	
-
-	public User () {
+	public Client() {
 		
 	}
-
-	public User(Long id, String name, String password, String email, LocalDate creation) {
-		super();
+	
+	public Client(Long id, String name, String cpf, String phone1, String phone2, String email) {
 		this.id = id;
 		this.name = name;
-		this.password = password;
+		this.cpf = cpf;
+		this.phone1 = phone1;
+		this.phone2 = phone2;
 		this.email = email;
-		this.creation = creation;
 	}
-
-	public Set<Order> getOrders() {
-		return orders;
+	
+	public Set<Order> getOrder() {
+		return order;
 	}
 
 	public Long getId() {
@@ -61,6 +60,14 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -69,12 +76,20 @@ public class User implements Serializable {
 		this.name = name;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getPhone1() {
+		return phone1;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPhone1(String phone1) {
+		this.phone1 = phone1;
+	}
+
+	public String getPhone2() {
+		return phone2;
+	}
+
+	public void setPhone2(String phone2) {
+		this.phone2 = phone2;
 	}
 
 	public String getEmail() {
@@ -85,17 +100,9 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public LocalDate getCreation() {
-		return creation;
-	}
-
-	public void setCreation(LocalDate creation) {
-		this.creation = creation;
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(email);
+		return Objects.hash(cpf);
 	}
 
 	@Override
@@ -106,8 +113,7 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
-		return Objects.equals(email, other.email);
+		Client other = (Client) obj;
+		return Objects.equals(cpf, other.cpf);
 	}
-	
 }

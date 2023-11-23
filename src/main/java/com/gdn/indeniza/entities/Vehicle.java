@@ -3,6 +3,15 @@ package com.gdn.indeniza.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name= "tb_vehicle")
 public class Vehicle implements Serializable{
 	
 	/**
@@ -10,25 +19,38 @@ public class Vehicle implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	private String type;
 	private String brand;
 	private String model;
-	private Integer year;
+	private Integer manufacture;
 	private String plate;
+	@Column(unique = true)
 	private Integer renavam;
 	
 	public Vehicle() {
 		
 	}
 
-	public Vehicle(String vehicle, String brand, String model, Integer year, String plate, Integer renavam) {
+	public Vehicle(Long id, String vehicle, String brand, String model, Integer manufacture, String plate, Integer renavam) {
 		super();
+		this.id = id;
 		this.type = vehicle;
 		this.brand = brand;
 		this.model = model;
-		this.year = year;
+		this.manufacture = manufacture;
 		this.plate = plate;
 		this.renavam = renavam;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getVehicle() {
@@ -56,11 +78,11 @@ public class Vehicle implements Serializable{
 	}
 
 	public Integer getYear() {
-		return year;
+		return manufacture;
 	}
 
-	public void setYear(Integer year) {
-		this.year = year;
+	public void setYear(Integer manufacture) {
+		this.manufacture = manufacture;
 	}
 
 	public String getPlate() {

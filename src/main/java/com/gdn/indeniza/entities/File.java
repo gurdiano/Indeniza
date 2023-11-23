@@ -2,55 +2,55 @@ package com.gdn.indeniza.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name= "tb_user")
-public class User implements Serializable {
+@Table(name= "tb_file")
+public class File implements Serializable{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+	 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(unique = true)
-	private String email;
 	private String name;
-	private String password;
-	private LocalDate creation;
+	private String path;
+	private LocalDate date;
 	
-	@OneToMany(mappedBy = "partner")
-	private Set<Order> orders = new HashSet<>();
+	@ManyToOne
+	private Order order;
 	
-
-	public User () {
-		
+	public File () {
+		  
 	}
 
-	public User(Long id, String name, String password, String email, LocalDate creation) {
+	public File(Long id, String name, String path, LocalDate date, Order order) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.password = password;
-		this.email = email;
-		this.creation = creation;
+		this.path = path;
+		this.date = date;
+		this.order = order;
+	}
+	
+	public Order getOrder() {
+		return order;
 	}
 
-	public Set<Order> getOrders() {
-		return orders;
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
 	public Long getId() {
@@ -60,7 +60,7 @@ public class User implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
@@ -69,33 +69,25 @@ public class User implements Serializable {
 		this.name = name;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getPath() {
+		return path;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPath(String path) {
+		this.path = path;
 	}
 
-	public String getEmail() {
-		return email;
+	public LocalDate getDate() {
+		return date;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public LocalDate getCreation() {
-		return creation;
-	}
-
-	public void setCreation(LocalDate creation) {
-		this.creation = creation;
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email);
+		return Objects.hash(name);
 	}
 
 	@Override
@@ -106,8 +98,7 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
-		return Objects.equals(email, other.email);
+		File other = (File) obj;
+		return Objects.equals(name, other.name);
 	}
-	
 }
