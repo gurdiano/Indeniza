@@ -2,7 +2,9 @@ package com.gdn.indeniza.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -46,7 +48,10 @@ public class Order implements Serializable{
 	@OneToMany(mappedBy = "order")
 	private Set<File> file = new HashSet<>();
 	
+	@OneToMany(mappedBy = "order")
+	private List<Follow> follow = new ArrayList<>();
 	
+	//constructors
 	public Order() {
 		
 	}
@@ -59,17 +64,23 @@ public class Order implements Serializable{
 		this.client = client;
 		this.partner = partner;
 	}
-
+	
+	// getters e setters 
+	public List<Follow> getFollow() {
+		return follow;
+	}
+	
+	public Set<File> getFile() {
+		return file;
+	}
+	
 	public User getPartner() {
 		return partner;
 	}
 
+
 	public void setPartner(User partner) {
 		this.partner = partner;
-	}
-
-	public Set<File> getFile() {
-		return file;
 	}
 
 	public Client getClient() {
@@ -112,6 +123,7 @@ public class Order implements Serializable{
 		this.date = date;
 	}
 
+	//hash and equals
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

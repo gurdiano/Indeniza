@@ -1,7 +1,7 @@
 package com.gdn.indeniza.entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -30,23 +30,29 @@ public class User implements Serializable {
 	private String email;
 	private String name;
 	private String password;
-	private LocalDate creation;
+	private LocalDateTime creation;
 	
 	@OneToMany(mappedBy = "partner")
 	private Set<Order> orders = new HashSet<>();
 	
+	@OneToMany(mappedBy = "user")
+	private Set<Follow> follows = new HashSet<>();
 
 	public User () {
 		
 	}
 
-	public User(Long id, String name, String password, String email, LocalDate creation) {
+	public User(Long id, String name, String password, String email, LocalDateTime creation) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.password = password;
 		this.email = email;
 		this.creation = creation;
+	}
+	
+	public Set<Follow> getFollows() {
+		return follows;
 	}
 
 	public Set<Order> getOrders() {
@@ -85,11 +91,11 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public LocalDate getCreation() {
+	public LocalDateTime getCreation() {
 		return creation;
 	}
 
-	public void setCreation(LocalDate creation) {
+	public void setCreation(LocalDateTime creation) {
 		this.creation = creation;
 	}
 

@@ -1,7 +1,7 @@
 package com.gdn.indeniza.entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import com.gdn.indeniza.entities.enums.Status;
@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,20 +25,43 @@ public class Follow implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private LocalDate date;
+	private LocalDateTime date;
 	private String registry;
 	private Status status;
+	
+	@ManyToOne
+	private Order order;
+	
+	@ManyToOne
+	private User user;
 	
 	public Follow() {
 		
 	}
-
-	public Follow(Long id, LocalDate date, String registry, Status status) {
-		super();
+	
+	public Follow(Long id, LocalDateTime date, String registry, Status status, Order order, User user) {
 		this.id = id;
 		this.date = date;
 		this.registry = registry;
 		this.status = status;
+		this.order = order;
+		this.user = user;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
 	public Long getId() {
@@ -48,11 +72,11 @@ public class Follow implements Serializable{
 		this.id = id;
 	}
 
-	public LocalDate getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 

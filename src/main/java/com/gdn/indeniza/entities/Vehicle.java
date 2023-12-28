@@ -1,13 +1,16 @@
 package com.gdn.indeniza.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -28,16 +31,19 @@ public class Vehicle implements Serializable{
 	private Integer manufacture;
 	private String plate;
 	@Column(unique = true)
-	private Integer renavam;
+	private String renavam;
+	
+	@OneToMany(mappedBy = "vehicle")
+	private Set<Dpvat> dpvat = new HashSet<>();
 	
 	public Vehicle() {
 		
 	}
 
-	public Vehicle(Long id, String vehicle, String brand, String model, Integer manufacture, String plate, Integer renavam) {
+	public Vehicle(Long id, String type, String brand, String model, Integer manufacture, String plate, String renavam) {
 		super();
 		this.id = id;
-		this.type = vehicle;
+		this.type = type;
 		this.brand = brand;
 		this.model = model;
 		this.manufacture = manufacture;
@@ -45,6 +51,10 @@ public class Vehicle implements Serializable{
 		this.renavam = renavam;
 	}
 	
+	public Set<Dpvat> getDpvat() {
+		return dpvat;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -53,12 +63,12 @@ public class Vehicle implements Serializable{
 		this.id = id;
 	}
 
-	public String getVehicle() {
+	public String getType() {
 		return type;
 	}
 
-	public void setVehicle(String vehicle) {
-		this.type = vehicle;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getBrand() {
@@ -77,11 +87,11 @@ public class Vehicle implements Serializable{
 		this.model = model;
 	}
 
-	public Integer getYear() {
+	public Integer getManufacture() {
 		return manufacture;
 	}
 
-	public void setYear(Integer manufacture) {
+	public void setManufacture(Integer manufacture) {
 		this.manufacture = manufacture;
 	}
 
@@ -93,11 +103,11 @@ public class Vehicle implements Serializable{
 		this.plate = plate;
 	}
 
-	public Integer getRenavam() {
+	public String getRenavam() {
 		return renavam;
 	}
 
-	public void setRenavam(Integer renavam) {
+	public void setRenavam(String renavam) {
 		this.renavam = renavam;
 	}
 

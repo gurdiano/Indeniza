@@ -1,6 +1,7 @@
 package com.gdn.indeniza.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -13,27 +14,38 @@ public class Dpvat extends Service{
 	private static final long serialVersionUID = 1L;
 	
 	
-	private String name;
+	private String insuranceCompany;
 	private String sinistro;
-	private String hospital;
 	
+	
+	@ManyToOne
+	private Vehicle vehicle;
+
 	public Dpvat () {
 		
 	}
 
-	public Dpvat(String name, String sinistro, String hospital, Long id, Double payment) {
+	public Dpvat(String insuranceCompany, String sinistro, Long id, Double payment, Vehicle vehicle) {
 		super(id, payment);
-		this.name = name;
+		this.insuranceCompany = insuranceCompany;
 		this.sinistro = sinistro;
-		this.hospital = hospital;
+		this.vehicle = vehicle;
 	}
 
-	public String getName() {
-		return name;
+	public Vehicle getVehicle() {
+		return vehicle;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
+	}
+	
+	public String getInsuranceCompany() {
+		return insuranceCompany;
+	}
+
+	public void setInsuranceCompany(String insuranceCompany) {
+		this.insuranceCompany = insuranceCompany;
 	}
 
 	public String getSinistro() {
@@ -42,13 +54,5 @@ public class Dpvat extends Service{
 
 	public void setSinistro(String sinistro) {
 		this.sinistro = sinistro;
-	}
-
-	public String getHospital() {
-		return hospital;
-	}
-
-	public void setHospital(String hospital) {
-		this.hospital = hospital;
 	}
 }
