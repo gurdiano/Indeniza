@@ -17,7 +17,6 @@ public class Dpvat extends Service{
 	private String insuranceCompany;
 	private String sinistro;
 	
-	
 	@ManyToOne
 	private Vehicle vehicle;
 

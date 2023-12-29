@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +35,7 @@ public class Vehicle implements Serializable{
 	@Column(unique = true)
 	private String renavam;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "vehicle")
 	private Set<Dpvat> dpvat = new HashSet<>();
 	

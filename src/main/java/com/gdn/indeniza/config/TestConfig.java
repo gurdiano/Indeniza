@@ -19,13 +19,11 @@ import com.gdn.indeniza.entities.Vehicle;
 import com.gdn.indeniza.entities.enums.Status;
 import com.gdn.indeniza.repositories.AddressRepository;
 import com.gdn.indeniza.repositories.ClientRepository;
-import com.gdn.indeniza.repositories.FileRepository;
-import com.gdn.indeniza.repositories.FollowRepository;
 import com.gdn.indeniza.repositories.HospitalRepository;
-import com.gdn.indeniza.repositories.OrderRepository;
 import com.gdn.indeniza.repositories.ServiceRepository;
 import com.gdn.indeniza.repositories.UserRepository;
 import com.gdn.indeniza.repositories.VehicleRepository;
+import com.gdn.indeniza.resources.VehicleResource;
 import com.gdn.indeniza.services.OrderService;
 import com.gdn.indeniza.services.followService;
 
@@ -39,24 +37,21 @@ public class TestConfig implements CommandLineRunner{
 	@Autowired
 	private ServiceRepository serviceRepository;
 	@Autowired
-	private OrderRepository orderRepository;
-	@Autowired
 	private ClientRepository clientRepository;
-	@Autowired
-	private FileRepository fileRepository;
 	@Autowired
 	private VehicleRepository vehicleRepository;
 	@Autowired
 	private HospitalRepository hospitalRepository;
 	@Autowired
 	private AddressRepository addressRepository;
-	@Autowired
-	private FollowRepository followRepository;
 	//services
 	@Autowired
 	private OrderService orderService;
 	@Autowired
 	private followService followService;
+	//
+	@Autowired
+	private VehicleResource vehicleResource;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -107,5 +102,7 @@ public class TestConfig implements CommandLineRunner{
 		orderService.createOrder(c3, u2, s3, Status.WAITING_APPROVAL);
 		
 		followService.CreateFollow("esperando fulando", Status.WAITING_DOCUMETATION, o1, u1);
+		
+		vehicleResource.findAll();
 	}
 }
