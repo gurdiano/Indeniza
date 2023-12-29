@@ -1,7 +1,6 @@
 	package com.gdn.indeniza.config;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +61,8 @@ public class TestConfig implements CommandLineRunner{
 //		Dpvat(String insuranceCompany, String sinistro, Long id, Double payment, Vehicle vehicle)
 //		Vehicle(Long id, String type, String brand, String model, Integer manufacture, String plate, String renavam)
 		
-		User u1 = new User(null, "Tiago", "sasaas@As05", "tiagofran2013@hotmail.com", LocalDateTime.now());
-		User u2 = new User(null, "Sofia", "sofi@As05", "sofia@hotmail.com", LocalDateTime.now());
+		User u1 = new User(null, "Tiago", "sasaas@As05", "tiagofran2013@hotmail.com");
+		User u2 = new User(null, "Sofia", "sofi@As05", "sofia@hotmail.com");
 		userRepository.saveAll(Arrays.asList(u1, u2));
 		
 		Vehicle v1 = new Vehicle(null, "Carro", "Volkswagem", "Golf", 2003, "AKX0I40", "06850165");

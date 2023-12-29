@@ -6,13 +6,17 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 
 @Entity
 @Table(name= "tb_user")
@@ -27,14 +31,17 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(unique = true)
+	@Email
 	private String email;
 	private String name;
 	private String password;
 	private LocalDateTime creation;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "partner")
 	private Set<Order> orders = new HashSet<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private Set<Follow> follows = new HashSet<>();
 
@@ -42,13 +49,17 @@ public class User implements Serializable {
 		
 	}
 
-	public User(Long id, String name, String password, String email, LocalDateTime creation) {
+	public User(Long id, String name, String password, String email) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.password = password;
 		this.email = email;
-		this.creation = creation;
+	}
+	
+	@PrePersist
+	public void prePersist() {
+		this.creation = LocalDateTime.now();
 	}
 	
 	public Set<Follow> getFollows() {
@@ -90,15 +101,11 @@ public class User implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
+	
 	public LocalDateTime getCreation() {
 		return creation;
 	}
-
-	public void setCreation(LocalDateTime creation) {
-		this.creation = creation;
-	}
-
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(email);
