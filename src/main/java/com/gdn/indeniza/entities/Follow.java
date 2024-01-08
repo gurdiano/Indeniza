@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gdn.indeniza.entities.enums.Status;
 
 import jakarta.persistence.Entity;
@@ -11,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -29,9 +31,11 @@ public class Follow implements Serializable{
 	private String registry;
 	private Status status;
 	
+	@JsonIgnore
 	@ManyToOne
 	private Order order;
 	
+	@JsonIgnore
 	@ManyToOne
 	private User user;
 	
@@ -39,15 +43,19 @@ public class Follow implements Serializable{
 		
 	}
 	
-	public Follow(Long id, LocalDateTime date, String registry, Status status, Order order, User user) {
+	public Follow(Long id, String registry, Status status, Order order, User user) {
 		this.id = id;
-		this.date = date;
 		this.registry = registry;
 		this.status = status;
 		this.order = order;
 		this.user = user;
 	}
 
+	@PrePersist
+	public void prePersist() {
+		this.date = LocalDateTime.now();
+	}
+	
 	public User getUser() {
 		return user;
 	}
@@ -74,10 +82,6 @@ public class Follow implements Serializable{
 
 	public LocalDateTime getDate() {
 		return date;
-	}
-
-	public void setDate(LocalDateTime date) {
-		this.date = date;
 	}
 
 	public String getRegistry() {

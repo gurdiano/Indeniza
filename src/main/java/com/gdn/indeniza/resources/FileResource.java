@@ -15,32 +15,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.gdn.indeniza.entities.User;
-import com.gdn.indeniza.services.UserService;
-
-import jakarta.validation.Valid;
+import com.gdn.indeniza.entities.File;
+import com.gdn.indeniza.services.FileService;
 
 @RestController
-@RequestMapping(value = "/users")
-public class UserResource {
+@RequestMapping(value = "/files")
+public class FileResource {
 
 	@Autowired
-	private UserService service;
+	private FileService service;
 	
 	@GetMapping
-	public ResponseEntity<List<User>> findAll(){
-		List<User> list = service.findAll(); 
+	public ResponseEntity<List<File>> findAll(){
+		List<File> list = service.findAll(); 
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<User> findById(@PathVariable Long id){
-		User obj = service.findById(id);
+	public ResponseEntity<File> findById(@PathVariable Long id){
+		File obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
-	public ResponseEntity<User> insert(@RequestBody @Valid User obj){
+	public ResponseEntity<File> insert(@RequestBody File obj){
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
@@ -53,7 +51,7 @@ public class UserResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User obj){
+	public ResponseEntity<File> update(@PathVariable Long id, @RequestBody File obj){
 		obj = service.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}

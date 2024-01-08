@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gdn.indeniza.entities.enums.Status;
 
 import jakarta.persistence.Entity;
@@ -45,9 +46,11 @@ public class Order implements Serializable{
 	@ManyToOne
 	private User partner;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "order")
 	private Set<File> file = new HashSet<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "order")
 	private List<Follow> follow = new ArrayList<>();
 	

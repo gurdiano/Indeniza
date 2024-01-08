@@ -4,12 +4,15 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -29,6 +32,7 @@ public class File implements Serializable{
 	private String path;
 	private LocalDate date;
 	
+	@JsonIgnore
 	@ManyToOne
 	private Order order;
 	
@@ -36,13 +40,17 @@ public class File implements Serializable{
 		  
 	}
 
-	public File(Long id, String name, String path, LocalDate date, Order order) {
+	public File(Long id, String name, String path, Order order) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.path = path;
-		this.date = date;
 		this.order = order;
+	}
+	
+	@PrePersist
+	public void prePersist() {
+		this.date = LocalDate.now();
 	}
 	
 	public Order getOrder() {
@@ -79,10 +87,6 @@ public class File implements Serializable{
 
 	public LocalDate getDate() {
 		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
 	}
 
 	@Override

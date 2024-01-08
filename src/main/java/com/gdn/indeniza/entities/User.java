@@ -2,11 +2,18 @@ package com.gdn.indeniza.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gdn.indeniza.entities.enums.Role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +27,7 @@ import jakarta.validation.constraints.Email;
 
 @Entity
 @Table(name= "tb_user")
-public class User implements Serializable {
+public class User implements Serializable , UserDetails{
 	
 	/**
 	 * 
@@ -36,6 +43,7 @@ public class User implements Serializable {
 	private String name;
 	private String password;
 	private LocalDateTime creation;
+	private Role role;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "partner")
@@ -49,12 +57,21 @@ public class User implements Serializable {
 		
 	}
 
-	public User(Long id, String name, String password, String email) {
+	public User(Long id, String name, String password, String email, Role role) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.password = password;
 		this.email = email;
+		this.role = role;
+	}
+	
+	public Role getRole() {
+		return role;
+	}
+	
+	public void setRole(Role role) {
+		this.role = role;
 	}
 	
 	@PrePersist
@@ -121,6 +138,46 @@ public class User implements Serializable {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(email, other.email);
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		if(this.role == Role.ADMIN || this.role == Role.MASTER) { 
+			return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+				
+		}
+		else {
+			return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+		}
+	}
+
+	@Override
+	public String getUsername() {
+		return email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 	
 }

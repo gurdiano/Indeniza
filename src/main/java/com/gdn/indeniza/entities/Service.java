@@ -3,6 +3,8 @@ package com.gdn.indeniza.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +30,7 @@ public class Service implements Serializable {
 	private Long id;
 	private Double payment;
 
+	@JsonIgnore
 	@OneToOne(mappedBy = "service", cascade = CascadeType.ALL)
 	private Order order;
 	
@@ -65,7 +68,7 @@ public class Service implements Serializable {
 		this.payment = payment;
 	}
 
-	public Double commissionAmount() {
+	public Double getCommissionAmount() {
 		Double commission;
 		commission = (30 * getPayment()) / 100;
 		return commission;

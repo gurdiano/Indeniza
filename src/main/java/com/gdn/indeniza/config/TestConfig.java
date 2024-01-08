@@ -11,20 +11,23 @@ import org.springframework.context.annotation.Profile;
 import com.gdn.indeniza.entities.Address;
 import com.gdn.indeniza.entities.Client;
 import com.gdn.indeniza.entities.Dpvat;
+import com.gdn.indeniza.entities.File;
 import com.gdn.indeniza.entities.Hospital;
 import com.gdn.indeniza.entities.Order;
 import com.gdn.indeniza.entities.User;
 import com.gdn.indeniza.entities.Vehicle;
+import com.gdn.indeniza.entities.enums.Role;
 import com.gdn.indeniza.entities.enums.Status;
 import com.gdn.indeniza.repositories.AddressRepository;
 import com.gdn.indeniza.repositories.ClientRepository;
+import com.gdn.indeniza.repositories.FileRepository;
 import com.gdn.indeniza.repositories.HospitalRepository;
+import com.gdn.indeniza.repositories.OrderRepository;
 import com.gdn.indeniza.repositories.ServiceRepository;
 import com.gdn.indeniza.repositories.UserRepository;
 import com.gdn.indeniza.repositories.VehicleRepository;
-import com.gdn.indeniza.resources.VehicleResource;
+import com.gdn.indeniza.services.FollowService;
 import com.gdn.indeniza.services.OrderService;
-import com.gdn.indeniza.services.followService;
 
 @Configuration
 @Profile("test")
@@ -43,15 +46,16 @@ public class TestConfig implements CommandLineRunner{
 	private HospitalRepository hospitalRepository;
 	@Autowired
 	private AddressRepository addressRepository;
+	@Autowired
+	private FileRepository fileRepository;
+	@Autowired
+	private OrderRepository orderRepository;
 	//services
 	@Autowired
 	private OrderService orderService;
 	@Autowired
-	private followService followService;
-	//
-	@Autowired
-	private VehicleResource vehicleResource;
-
+	private FollowService followService;
+	
 	@Override
 	public void run(String... args) throws Exception {
 	
@@ -60,9 +64,10 @@ public class TestConfig implements CommandLineRunner{
 //		Order(Long id, Status status, LocalDate date, Service service, Client client, User partner)
 //		Dpvat(String insuranceCompany, String sinistro, Long id, Double payment, Vehicle vehicle)
 //		Vehicle(Long id, String type, String brand, String model, Integer manufacture, String plate, String renavam)
+//		File(Long id, String name, String path, Order order)
 		
-		User u1 = new User(null, "Tiago", "sasaas@As05", "tiagofran2013@hotmail.com");
-		User u2 = new User(null, "Sofia", "sofi@As05", "sofia@hotmail.com");
+		User u1 = new User(null, "Tiago", "sasaas@As05", "tiagofran2013@hotmail.com", Role.MASTER);
+		User u2 = new User(null, "Sofia", "sofi@As05", "sofia@hotmail.com", Role.ADMIN);
 		userRepository.saveAll(Arrays.asList(u1, u2));
 		
 		Vehicle v1 = new Vehicle(null, "Carro", "Volkswagem", "Golf", 2003, "AKX0I40", "06850165");
@@ -102,6 +107,40 @@ public class TestConfig implements CommandLineRunner{
 		
 		followService.CreateFollow("esperando fulando", Status.WAITING_DOCUMETATION, o1, u1);
 		
-		vehicleResource.findAll();
+		File f1 = new File(null, "arq.txt", "C:\\Users\\Tiago\\Desktop\\notes\\projeto_adv", o1);
+		File f2 = new File(null, "arq1.txt", "C:\\Users\\Tiago\\Desktop\\notes\\projeto_adv", o1);
+		File f3 = new File(null, "arq2.txt", "C:\\Users\\Tiago\\Desktop\\notes\\projeto_adv", o1);
+		fileRepository.saveAll(Arrays.asList(f1, f2, f3));
+		
+		
+		Dpvat s5 = new Dpvat("processo", "109820", null, 1500.00, v2);
+		Dpvat s6 = new Dpvat("processo", "109820", null, 2500.00, v1);
+		Dpvat s7 = new Dpvat("processo", "109820", null, 1750.00, v3);
+		Dpvat s8 = new Dpvat("processo", "109820", null, 899.99, v2);
+		Dpvat s9 = new Dpvat("processo", "109820", null, 500.40, v1);
+		Dpvat s10 = new Dpvat("processo", "109820", null, 300.15, v1);
+		Dpvat s11 = new Dpvat("processo", "109820", null, 75.00, v3);
+		
+		serviceRepository.saveAll(Arrays.asList(s5, s6, s7, s8, s9, s10, s11));
+//		Order(Long id, Status status, LocalDate date, Service service, Client client, User partner)
+		Order o2 = new Order(null, Status.WAITING_APPROVAL, LocalDate.parse("2023-11-01"), s5, c1, u1);
+		Order o3 = new Order(null, Status.WAITING_APPROVAL, LocalDate.parse("2023-11-08"), s6, c1, u1);
+		Order o4 = new Order(null, Status.WAITING_APPROVAL, LocalDate.parse("2023-11-15"), s7, c1, u1);
+		Order o5 = new Order(null, Status.WAITING_APPROVAL, LocalDate.parse("2023-11-22"), s8, c1, u1);
+		Order o6 = new Order(null, Status.WAITING_APPROVAL, LocalDate.parse("2023-12-01"), s9, c1, u1);
+		Order o7 = new Order(null, Status.WAITING_APPROVAL, LocalDate.parse("2023-12-08"), s10, c1, u1);
+		Order o8 = new Order(null, Status.WAITING_APPROVAL, LocalDate.parse("2023-12-15"), s11, c1, u1);
+		
+		s5.setOrder(o2);
+		s6.setOrder(o3);
+		s7.setOrder(o4);
+		s8.setOrder(o5);
+		s9.setOrder(o6);
+		s10.setOrder(o7);
+		s11.setOrder(o8);
+		
+		serviceRepository.saveAll(Arrays.asList(s5, s6, s7, s8, s9, s10, s11));
+		
+		orderRepository.saveAll(Arrays.asList(o2, o3, o4, o5, o6, o7, o8));
 	}
 }

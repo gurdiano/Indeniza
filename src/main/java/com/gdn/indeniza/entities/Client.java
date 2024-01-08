@@ -8,6 +8,8 @@ import java.util.Set;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,6 +45,7 @@ public class Client implements Serializable{
 	private String email;
 	private String motherName;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "client")
 	private Set<Order> order = new HashSet<>();
 	
