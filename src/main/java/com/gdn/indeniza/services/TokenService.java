@@ -1,8 +1,6 @@
 package com.gdn.indeniza.services;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -47,7 +45,7 @@ public class TokenService {
 		}
 	}
 	
-	public Instant GenerateExepirationDate() {
-		return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-3"));
+	private Instant GenerateExepirationDate() {
+		return Instant.now().plusSeconds(7200);
 	}
 }

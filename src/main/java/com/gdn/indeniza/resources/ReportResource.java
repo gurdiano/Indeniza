@@ -28,7 +28,7 @@ public class ReportResource {
 	
 	@GetMapping(value = "/generate")
 	public ResponseEntity<Report> generateReport(@RequestBody ReportDTO obj){
-		Report report = service.generateReport(obj.getInitialDate(), obj.getFinalDate(), obj.getColab());
+		Report report = service.generateReport(obj.initialDate(), obj.finalDate(), obj.colab());
 		return ResponseEntity.ok().body(report);
 	}
 	

@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfigurations {
+public class SecurityConfig {
 	@Autowired
 	private SecurityFilter securityFilter;
 	
@@ -37,11 +37,19 @@ public class SecurityConfigurations {
 				authorize -> authorize
 				.requestMatchers(HttpMethod.POST, "/auth/**")
 				.permitAll()
+				.requestMatchers(HttpMethod.POST, "/login")
+				.permitAll()
+				.requestMatchers(HttpMethod.GET, "/users/**")
+				.hasRole("MASTER")
+				.requestMatchers(HttpMethod.GET, "/orders/**")
+				.hasRole("ADMIN")
+				.requestMatchers(HttpMethod.GET, "/clients/**")
+				.hasRole("USER")
 				.anyRequest()
 				.authenticated()
-		)
-		.addFilterBefore(this.securityFilter, UsernamePasswordAuthenticationFilter.class);
-
+		);
+		
+		httpSecurity.addFilterBefore(this.securityFilter, UsernamePasswordAuthenticationFilter.class);
 		
     	return httpSecurity.build();
 	} 
